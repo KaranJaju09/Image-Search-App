@@ -1,8 +1,8 @@
-# Design Document: Image-to-Image Search
+# Design Document: Image Search App
 
 ## 1. Project Overview
 
-This document outlines the design and architecture of the Image-to-Image Search application. The project's goal is to provide a simple and efficient way to find similar images within a dataset based on a query image. It leverages the power of OpenAI's CLIP model for creating semantic vector embeddings of images and uses Milvus as a high-performance vector database for storing and searching these embeddings.
+This document outlines the design and architecture of the Image Search application. The project's goal is to provide a simple and efficient way to find similar images within a dataset based on a query image. It leverages the power of OpenAI's CLIP model for creating semantic vector embeddings of images and uses Milvus as a high-performance vector database for storing and searching these embeddings.
 
 ## 2. Project Structure
 

@@ -84,9 +84,9 @@ def load_test_images(folder):
 
 # --- Streamlit UI ---
 
-st.set_page_config(layout="wide", page_title="Image to Image Search App")
+st.set_page_config(layout="wide", page_title="Image Search App")
 
-st.title("Image to Image Search with CLIP and Milvus")
+st.title("Image Search with CLIP and Milvus")
 
 # Check if the Milvus collection exists
 has_collection = milvus_client.has_collection(collection_name=COLLECTION_NAME)
