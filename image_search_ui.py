@@ -150,7 +150,7 @@ if search_mode == "Search using gallery":
                 st.image(img, use_container_width=True)
                 if st.button("Select", key=f"select_{idx}"):
                     st.session_state["selected_image_path"] = image_path
-                    st.experimental_rerun()
+                    st.rerun()
 
 # --- Upload Search ---
 
