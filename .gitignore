@@ -1,0 +1,4 @@
+/.milvus.db.lock
+/.venv
+/__pycache__
+/milvus.db
