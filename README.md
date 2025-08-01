@@ -1,6 +1,6 @@
-# Image-to-Image Search with CLIP and Milvus
+# Image Search with CLIP and Milvus
 
-This project implements an image-to-image search application using OpenAI's CLIP model for generating image embeddings and Milvus as a vector database for efficient similarity search. The user interface is built with Streamlit.
+This project implements an image search application using OpenAI's CLIP model for generating image embeddings and Milvus as a vector database for efficient similarity search. The user interface is built with Streamlit.
 
 ## Features
 
@@ -20,7 +20,7 @@ This project implements an image-to-image search application using OpenAI's CLIP
 1.  **Clone the repository:**
 
     ```bash
-    git clone https://github.com/KaranJaju09/image-to-image-search.git
+    git clone https://github.com/KaranJaju09/Image-Search-App.git
     cd image-to-image-search
     ```
 
