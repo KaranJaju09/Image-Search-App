@@ -106,21 +106,51 @@ selected_image_path = None
 # --- Gallery Search ---
 
 if search_mode == "Search using gallery":
-    st.subheader("Select an image from the gallery")
+    st.subheader("Search using gallery")
     test_images = load_test_images(TEST_FOLDER)
 
     if not test_images:
         st.warning("No images found in the test folder.")
     else:
-        # Display images in a grid
-        cols = st.columns(5)
+        # Display search results at the top if previously selected
+        if "selected_image_path" in st.session_state:
+            selected_image_path = st.session_state["selected_image_path"]
+            st.subheader("Search Results")
+
+            image = Image.open(selected_image_path).convert("RGB")
+            with st.spinner("Encoding image and searching Milvus..."):
+                try:
+                    query_embedding = encode_image(image)
+                    search_results = milvus_client.search(
+                        collection_name=COLLECTION_NAME,
+                        data=[query_embedding],
+                        limit=num_results,
+                        output_fields=["image_path"],
+                    )
+
+                    if search_results and search_results[0]:
+                        cols = st.columns(5)
+                        for idx, hit in enumerate(search_results[0]):
+                            result_image_path = hit["entity"]["image_path"]
+                            score = hit["distance"]
+                            if os.path.exists(result_image_path):
+                                with cols[idx % 5]:
+                                    st.image(Image.open(result_image_path), caption=f"Score: {score:.4f}", use_container_width=True)
+                    else:
+                        st.info("No results found.")
+                except Exception as e:
+                    st.error(f"An error occurred during search: {e}")
+
+        # Display images for selection in a 10-column layout
+        st.markdown("### Choose an image:")
+        cols = st.columns(10)
         for idx, image_path in enumerate(test_images):
-            img = Image.open(image_path).convert("RGB")
-            img = img.resize((224, 224))  # Resize for consistent display
-            with cols[idx % 5]:
-                if st.button(f"Select Image {idx+1}", key=f"img_{idx}"):
-                    selected_image_path = image_path
-                st.image(img, caption=os.path.basename(image_path), use_container_width=True)
+            img = Image.open(image_path).convert("RGB").resize((100, 100))
+            with cols[idx % 10]:
+                st.image(img, use_container_width=True)
+                if st.button("Select", key=f"select_{idx}"):
+                    st.session_state["selected_image_path"] = image_path
+                    st.experimental_rerun()
 
 # --- Upload Search ---
 
