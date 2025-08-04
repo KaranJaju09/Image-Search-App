@@ -159,50 +159,50 @@ elif search_mode == "Upload an image":
     if uploaded_file is not None:
         selected_image = Image.open(uploaded_file).convert("RGB")
 
-# --- Perform Search and Display Results ---
+    # --- Perform Search and Display Results ---
 
-if selected_image or selected_image_path:
-    st.subheader("Search Results")
+    if selected_image or selected_image_path:
+        st.subheader("Search Results")
 
-    # Determine the query image
-    if selected_image_path:
-        image = Image.open(selected_image_path).convert("RGB")
-    else:
-        image = selected_image
+        # Determine the query image
+        if selected_image_path:
+            image = Image.open(selected_image_path).convert("RGB")
+        else:
+            image = selected_image
 
-    with st.spinner("Encoding image and searching Milvus..."):
-        try:
-            # Encode the query image and search in Milvus
-            query_embedding = encode_image(image)
-            search_results = milvus_client.search(
-                collection_name=COLLECTION_NAME,
-                data=[query_embedding],
-                limit=num_results,
-                output_fields=["image_path"],
-            )
+        with st.spinner("Encoding image and searching Milvus..."):
+            try:
+                # Encode the query image and search in Milvus
+                query_embedding = encode_image(image)
+                search_results = milvus_client.search(
+                    collection_name=COLLECTION_NAME,
+                    data=[query_embedding],
+                    limit=num_results,
+                    output_fields=["image_path"],
+                )
 
-            # Display the search results
-            if search_results and search_results[0]:
-                st.subheader("Relevant Images:")
-                cols = st.columns(5)
-                col_idx = 0
-                for hit in search_results[0]:
-                    image_path = hit["entity"]["image_path"]
-                    distance = hit["distance"]
-                    if os.path.exists(image_path):
-                        try:
-                            img = Image.open(image_path)
-                            with cols[col_idx % 5]:
-                                st.image(img, caption=f"Score: {distance:.4f}", use_container_width=True)
-                            col_idx += 1
-                        except Exception as e:
-                            st.warning(f"Could not load image {image_path}: {e}")
-                    else:
-                        st.warning(f"Image file not found: {image_path}")
-            else:
-                st.info("No results found.")
-        except Exception as e:
-            st.error(f"An error occurred during search: {e}")
+                # Display the search results
+                if search_results and search_results[0]:
+                    st.subheader("Relevant Images:")
+                    cols = st.columns(5)
+                    col_idx = 0
+                    for hit in search_results[0]:
+                        image_path = hit["entity"]["image_path"]
+                        distance = hit["distance"]
+                        if os.path.exists(image_path):
+                            try:
+                                img = Image.open(image_path)
+                                with cols[col_idx % 5]:
+                                    st.image(img, caption=f"Score: {distance:.4f}", use_container_width=True)
+                                col_idx += 1
+                            except Exception as e:
+                                st.warning(f"Could not load image {image_path}: {e}")
+                        else:
+                            st.warning(f"Image file not found: {image_path}")
+                else:
+                    st.info("No results found.")
+            except Exception as e:
+                st.error(f"An error occurred during search: {e}")
 
 # --- Sidebar ---
 
