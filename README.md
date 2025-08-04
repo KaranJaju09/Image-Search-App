@@ -2,6 +2,12 @@
 
 This project implements an image search application using OpenAI's CLIP model for generating image embeddings and Milvus as a vector database for efficient similarity search. The user interface is built with Streamlit.
 
+## Live Application
+
+If you want to try out the app, you can visit this link to use it - https://image-search-app-kj.streamlit.app/ 
+
+**Note**: The app may be in sleep mode due to inactivity, user should please wait the app to spawn up, it may take upto half an hour.
+
 ## Features
 
 -   **Image Indexing:** Recursively scans a directory of images, generates CLIP embeddings for each image, and stores them in a Milvus collection.
